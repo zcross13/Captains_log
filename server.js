@@ -24,9 +24,18 @@ mongoose.connection.once('open', () => { //listen to if we connect to mongoose
 // Routes --- INDUCES 
 
 // Index 
-// app.get('/logs', (req, res) => {
-//     res.send('<h1>Captains Log!</h1>');
-// });
+app.get('/logs', (req, res) => {
+    Log.find({}, (err, foundLogs) => {
+        if(err){
+            console.error(err)
+            res.send(400).send(err)
+        } else{
+            res.render('logs/Index', {
+                logs:foundLogs
+            })
+        }
+    });
+});
 
 // New route --- New.jsx 
 app.get('/logs/new', (req,res) => {
@@ -52,7 +61,18 @@ app.post('/logs', (req,res) => {
 // Edit 
 
 // Show 
-
+app.get('/logs/:id', (req, res) => {
+    Log.findById(req.params.id, (err, foundLog) => {
+        if(err){
+            console.error(err)
+            res.status(400).send(err)
+        } else {
+            res.render('logs/Show',{
+                log: foundLog
+            })
+        }
+    })
+})
 
 // The Port
 app.listen(3000, () => {
