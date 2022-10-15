@@ -3,6 +3,7 @@ const React = require('react')
 class Index extends React.Component{
     render(){
         const {logs} = this.props 
+        // console.log(this.props)
         return(
             <div>
                 <h1>Entries Log</h1>
@@ -24,6 +25,9 @@ class Index extends React.Component{
                                     }
                                     <br/>
                                     {entry}
+                                    <form method="POST" action={`/logs/${log._id}?_method=DELETE`}>
+                                        <input type="submit" value={`Delete ${title}`}/>
+                                    </form>
                                 </li>
                             )
                         })
