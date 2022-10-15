@@ -1,15 +1,12 @@
 const React = require('react')
+const Default = require('./layouts/Default')
 
 class Index extends React.Component{
     render(){
         const {logs} = this.props 
-        // console.log(this.props)
+        console.log(this.props)
         return(
-            <div>
-                <h1>Entries Log</h1>
-                <nav>
-                    <a href='logs/new'> Create Entry Here</a>
-                </nav>
+            <Default title='Logs'>
                 <ul>
                     {
                         logs.map((log) =>{
@@ -33,7 +30,7 @@ class Index extends React.Component{
                         })
                     }
                 </ul>
-                </div>
+                </Default>
         )
     }
 }

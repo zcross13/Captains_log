@@ -22,6 +22,7 @@ mongoose.connection.once('open', () => { //listen to if we connect to mongoose
 
 // Mount middle (app.use)
 app.use(methodOverride('_method')) //call method-override //need to change post request to DELETE or UPDATE request 
+app.use(express.static('public')); //tells express to try to match requests with files in the directory called 'public'
 
 
 // Routes --- INDUCES 
