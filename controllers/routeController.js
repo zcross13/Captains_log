@@ -4,88 +4,24 @@ const express = require('express') // so we can create the router
 //only the router none of the other app stuff 
 const router = express.Router()
 // Need the model because the job of the model is to give us access to DB 
-const Log = require('../models/log')
+const dataController = require('./dataController')
+const viewController = require('./viewController')
+
 // Routes 
 
-// Index
-router.get('/', (req, res) =>{
-    // use Fruits model to get al Fruits 
-    Log.find({}, (err, foundLogs) => {
-        if(err){
-            res.status(400).send(err)
-            console.error(err)
-        } else {
-            res.render('logs/Index', {
-                logs: foundLogs
-            })
-        }
-    })
-})
-// New
-router.get('/new', (req,res) =>{
-    res.render('logs/New')
-})
-// Delete
-router.delete('/:id', (req,res) => {
-    Log.findByIdAndDelete(req.params.id, (err, deletedLog) => {
-        if(err){
-            res.status(400).send(err)
-            console.error(err)
-        } else {
-            res.redirect('/logs')
-        }
-    })
-})
+// Index 
+router.get('/', dataController.index, viewController.index)
+// New 
+router.get('/new', viewController.newView)
+// Delete 
+router.delete('/:id', dataController.delete, viewController.redirectHome)
 // Update
-router.put('/:id/', (req, res) => {
-    req.body.shipIsBroken = req.body.shipIsBroken === 'on' ? req.body.shipIsBroken = true : false; 
-    Log.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedLog) =>{
-        if(err){
-            console.error(err)
-            res.status(400).send(err)
-        } else {
-            res.redirect(`/logs/${updatedLog._id}`)
-        }
-    })
-})
+router.put('/:id', dataController.update, viewController.redirectShow)
 // Create
-router.post('/',(req, res) => {
-    req.body.shipIsBroken = req.body.shipIsBroken === 'on'? true:false; //req.body = to eat ? if yes 'req.body.shipIsBroke' equal true if not 'it' equal false 
-    Log.create(req.body, (err, createdLog) => {
-        if(err){
-            res.status(400).send(err)
-            console.error(err)
-        } else {
-            res.redirect(`/logs/${createdLog._id}`)
-        }
-    })
-})
-// Edit
-router.get('/:id/edit', (req, res) => {
-    Log.findById(req.params.id, (err, foundLog) =>{
-        if(err){
-            res.status(400).send(err)
-            console.error(err)
-        } else {
-            res.render('logs/:id/edit', {
-                log: foundLog
-            })
-        }
-    })
-}) 
-// Show
-router.get('/:id', (req, res) => {
-    Log.findById(req.params.id, (err, foundLog) => {
-        if(err){
-            console.error(err)
-            res.status(400).send(err)
-        } else {
-            res.render('logs/Show', {
-                log: foundLog
-            })
-        }
-    })
-})
-
+router.post('/', dataController.create, viewController.redirectHome)
+// Edit 
+router.get('/:id/edit', dataController.show, viewController.edit )
+// Show 
+router.get('/:id', dataController.show, viewController.show)
 
 module.exports = router 
