@@ -4,7 +4,7 @@ const Default = require('./layouts/Default')
 class Index extends React.Component{
     render(){
         const {logs} = this.props 
-        // console.log(this.props)
+        console.log(this.props)
         return(
             <Default title='Logs'>
                 <ul>

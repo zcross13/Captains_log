@@ -1,9 +1,8 @@
 require('dotenv').config() //this method throws whatever in .env into process.env  
 //Load express
 const express = require('express')
-const mongoose = require('mongoose')
 const methodOverride = require('method-override') //function use to check if post request is PUT or DELETE // 
-
+const db = require('./models/db')
 // reminder to check package.json for install
 // const Log = require('./models/log') //remove model when you create routeController you no longer need it the routeController will contain it 
 
@@ -19,9 +18,8 @@ app.use((req,res,next) => { //need for routeController file
 })
 app.set('view engine', 'jsx')
 app.engine('jsx', require('jsx-view-engine').createEngine())
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-mongoose.connection.once('open', () => { //listen to if we connect to mongoose 
-    console.log('connect to mongo')
+db.once('open', () =>{
+    console.log('connected to MongoDB Atlas')
 })
 
 // Mount middle (app.use)
